@@ -27,8 +27,25 @@ it will take ~550 requests like these to get to 1M tokens
 
 prompt = paragraphs + instruction 
 
-deepinfra_key = "PLbjaJh2RwIAPwOfWrA3OxXtna2LSaci"
+import os
+from dotenv import load_dotenv
 from openai import OpenAI
+
+
+
+load_dotenv()
+
+# Access the environment variable by its key
+deepinfra_key = os.getenv("DEEPINFRA_KEY")
+
+# Check if the variable is set
+if deepinfra_key is not None:
+    print("KEY WAS READ SUCCESSFULY")
+else:
+    print("DEEPINFRA_KEY is not set in the .env file CANNOT CONTINUTE")
+    exit()
+
+
 
 
 client = OpenAI(
