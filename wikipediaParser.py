@@ -8,6 +8,7 @@ def get_text_sections_from_article(article_name):
     print("Getting stuff from wikipedia about "+article_name+"...")
     p = wikipedia.page(article_name)
 
+    print(p.images)
     print(p.url)
     print("Done.")
     print("Parsing sections...")
