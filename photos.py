@@ -16,15 +16,21 @@ def get_random_image_from_country(country):
     }
     response = requests.get(base_url, params=params)
 
+    remaining = response.headers.get("X-Ratelimit-Remaining")
+    print("Remaining images requests: "+str(remaining))
+
     if response.status_code == 200:
         data = response.json()
         
         #print(data)
-        #print(data['location'])
+        print("")
+        print(data['location'])
+        print("")
+        print("COUNTRY_LOCATION: "+data['location']['country'])
 
         image_url = data["urls"]["regular"]
         print(f"Random image from {country}: {image_url}")
     else:
         print(f"Error: Unable to fetch image. Status code: {response.status_code}")
 
-get_random_image_from_country('Slovenia')
+#get_random_image_from_country('Slovenia')

@@ -4,6 +4,7 @@ from wikipediaParser import get_text_sections_from_article
 from AI import sectionsToFacts
 import constants
 import AI
+import photos
 
 
 sections = None
@@ -12,26 +13,23 @@ round_nr = 0
 
 print("Starting the game.")
 
-chosen_continent = random.choice(constants.continents)
-#chosen_continent = "EUROPE"
+#chosen_continent = random.choice(constants.continents)
+chosen_continent = "EUROPE"
+#
+#print("Chosen continent is: "+chosen_continent)
+#
+#chosen_country = random.choice(constants.country_articles[chosen_continent])
+chosen_country = "France"
+chosen_country_obj = constants.countries[chosen_continent][chosen_country]
 
-print("Chosen continent is: "+chosen_continent)
-
-chosen_country = random.choice(constants.country_articles[chosen_continent])
-#chosen_country = "Chad (Country)"
-
-print("Chosen country is: "+chosen_country)
-sections = get_text_sections_from_article(chosen_country)
+print("Chosen country is: "+chosen_country_obj["wikipedia_id"])
+sections = get_text_sections_from_article(chosen_country_obj["wikipedia_id"])
 
 
 while True:
     if(len(sections) < 3):
-        if(round_nr <= 0):
-            print("BREAK ERROR SECTIONS TOO SHORT SOMETHING WENT WRONG")
-            exit()
-        else:
-            print("NO MORE SECTIONS LEFT TO MAKE INTERESTING FACTS")
-            break
+        # if there are no sections just get the same sections but this time they will be in new random order, besides in real game it will NEVER happen so this is just for safety
+        sections = get_text_sections_from_article(chosen_country_obj["wikipedia_id"])
     else:
         round_nr += 1
         print("=================")
@@ -49,13 +47,17 @@ while True:
         #print("Sections that were originally selected were removed")
         
         # TO DO STUFF
-        print("\n\n Asking AI for facts about this country \n")
+        #print("\n\n Asking AI for facts about this country \n")
+        print(sections_text + "\n")
 
-        AI_facts = sectionsToFacts(sections_text, chosen_country)
-        print(AI_facts)
+        #AI_facts = sectionsToFacts(sections_text, chosen_country)
+        #print(AI_facts)
 
-        print("\n MOCK OUTPUT OF GAME !!11! \n\n")
+        photos.get_random_image_from_country(chosen_country_obj["unsplash_id"])
 
+        #print("\n MOCK OUTPUT OF GAME !!11! \n\n")
+
+        print("\n \n \n === \n \n")
         user_input = input('Do you want to continue? If you do, type "yes": ')
         print(user_input)
         if(user_input == "yes"):
