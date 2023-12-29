@@ -12,6 +12,7 @@ class CountryInfoCommonData(models.Model):
 
 class CountryPhoto(CountryInfoCommonData):
     url = models.URLField(max_length=200)
+    unsplash_id = models.CharField(max_length=20, unique=True)
 
     # these are technically not necessary for now, but I am storing this data just in case
     full_location_string = models.TextField()
