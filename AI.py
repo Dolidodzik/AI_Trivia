@@ -34,7 +34,7 @@ def sectionsToFacts(sections, country_name):
     DO NOT, YOU MUSNT DO THESE THINGS:
     output messy, hard to understand text
     use sophisticated words
-    use names of cities, other countries or languages
+    use names of cities, countries or languages
     output more than 100 words
     make this too obvious
     do not talk about general or obvious stuff

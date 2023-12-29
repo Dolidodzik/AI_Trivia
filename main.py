@@ -13,13 +13,9 @@ round_nr = 0
 
 print("Starting the game.")
 
-#chosen_continent = random.choice(constants.continents)
-chosen_continent = "EUROPE"
-#
-#print("Chosen continent is: "+chosen_continent)
-#
-#chosen_country = random.choice(constants.country_articles[chosen_continent])
-chosen_country = "France"
+chosen_continent = "OCEANIA"
+chosen_country = "Marshall Islands"
+
 chosen_country_obj = constants.countries[chosen_continent][chosen_country]
 
 print("Chosen country is: "+chosen_country_obj["wikipedia_id"])
