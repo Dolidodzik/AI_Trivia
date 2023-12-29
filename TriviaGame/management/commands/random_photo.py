@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+
 from TriviaGame.models import CountryPhoto
 from TriviaGame.externalAPIs.photos import get_random_photo
 

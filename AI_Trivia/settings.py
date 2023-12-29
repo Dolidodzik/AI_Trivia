@@ -17,6 +17,14 @@ from dotenv import load_dotenv
 load_dotenv()
 UNSPLASH_KEY = os.getenv("UNSPLASH_KEY")
 
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_table",
+    }
+}
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_apscheduler',
+
     'TriviaGame'
 ]
 

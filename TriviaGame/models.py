@@ -18,6 +18,9 @@ class CountryPhoto(CountryInfoCommonData):
     full_location_string = models.TextField()
     full_URLs_list = models.TextField()
 
+    def __str__(self):
+        return self.country + " / " + self.unsplash_id
+
 class CountryFact(CountryInfoCommonData):
     fact = models.URLField(max_length=200)
 
