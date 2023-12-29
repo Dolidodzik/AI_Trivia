@@ -13,8 +13,8 @@ round_nr = 0
 
 print("Starting the game.")
 
-chosen_continent = "OCEANIA"
-chosen_country = "Marshall Islands"
+chosen_continent = "EUROPE"
+chosen_country = "Poland"
 
 chosen_country_obj = constants.countries[chosen_continent][chosen_country]
 
@@ -41,13 +41,13 @@ while True:
             sections.remove(section)
             sections_text += section
         #print("Sections that were originally selected were removed")
+        #print(sections_text + "\n")
         
         # TO DO STUFF
         #print("\n\n Asking AI for facts about this country \n")
-        print(sections_text + "\n")
-
-        #AI_facts = sectionsToFacts(sections_text, chosen_country)
-        #print(AI_facts)
+        
+        AI_facts = sectionsToFacts(sections_text, chosen_country)
+        print(AI_facts)
 
         photos.get_random_image_from_country(chosen_country_obj["unsplash_id"])
 
