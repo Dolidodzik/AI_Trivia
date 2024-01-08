@@ -28,7 +28,7 @@ def get_random_photo(country):
 
     remaining = response.headers.get("X-Ratelimit-Remaining")
     print("Remaining images requests: "+str(remaining))
-    cache.set("UNSPLASH_REQUESTS_REMAINING", remaining, 3600*2) # two hours
+    cache.set("UNSPLASH_REQUESTS_REMAINING", remaining, 3600/3) # 1/3 of an hour
 
     if response.status_code == 200:
         data = response.json()
@@ -78,7 +78,7 @@ def unused_requests_user():
     print("unused_requests_user() called")
 
     while True:
-        if time_until_next_hour() < 59:
+        if time_until_next_hour() < 2:
             print("Less than 2 minutes left until the next hour, so we can do saving.")
         else:
             print("More than 2 minutes left until the next hour, let's save requests for later.")
@@ -86,7 +86,9 @@ def unused_requests_user():
         
         requests_remaining = cache.get("UNSPLASH_REQUESTS_REMAINING")
 
-        if requests_remaining and int(requests_remaining) > 5:
+        # if there's no recent enough cache with UNSPLASH_REQUESTS_REMAINING, we make one request to refresh it
+        # we also make the request as usual, if UNSPLASH_REQUESTS_REMAINING and it's big enough
+        if not requests_remaining or int(requests_remaining) > 5:
             print("there's enough requests to continue")
         else:
             print("not enough requests to continue")

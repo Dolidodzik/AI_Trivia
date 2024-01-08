@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 UNSPLASH_KEY = os.getenv("UNSPLASH_KEY")
+DEEPINFRA_KEY = os.getenv("DEEPINFRA_KEY")
 
 
 CACHES = {
@@ -24,6 +25,25 @@ CACHES = {
         "LOCATION": "cache_table",
     }
 }
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # for development
+        # 'BACKEND': 'channels_redis.core.RedisChannelLayer',  # for production with Redis
+        # 'CONFIG': {
+        #     "hosts": [('127.0.0.1', 6379)],
+        # },
+    },
+}
+
+ASGI_APPLICATION = 'AI_Trivia.asgi.application'
+
+
+ALLOWED_HOSTS = ['*']
+CORS_ORIGIN_WHITELIST = [
+    'https://localhost:3000'
+]
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +63,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,6 +73,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_apscheduler',
+    'channels',
+    'rest_framework',
 
     'TriviaGame'
 ]
