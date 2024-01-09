@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, useRef } from 'react';
 import './App.css';
 
 interface Message {
@@ -26,7 +26,7 @@ function App() {
   const [inputMessage, setInputMessage] = useState<string>('');
   const [roomName, setRoomName] = useState<string>('test');
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const userInfo = useRef<UserInfo | null>(null);
 
   console.log("Messages: ", messages);
   console.log("USER INFO: ", userInfo);
@@ -41,13 +41,33 @@ function App() {
         const data = JSON.parse(event.data);
         console.log("NEW SOMETHING RECEIVED: ", data);
         if (data.type === 'chat.info') {
-          setUserInfo({
+          userInfo.current = {
             nickname: data.nickname,
             userId: data.userId,
-          });
+          }
+        } else if (data.type === 'system.message'){
+          const system_message = data.data;
+          console.log("NEW system.message RECEIVED: ", system_message);
+          console.log("curr state: ", userInfo)
+          if(system_message.subtype === "new_user_joined"){
+            // new user joined the channel
+            if(system_message.nickname === userInfo.current?.nickname){ // notification about own join received
+              const message: Message = {
+                content: "You joined the room!",
+                sentBy: "SYSTEM"
+              };
+              setMessages((prevMessages) => [...prevMessages, message]);
+            }else{ // other user
+              const message: Message = {
+                content: "User "+ system_message.nickname +" joined the room",
+                sentBy: "SYSTEM"
+              };
+              setMessages((prevMessages) => [...prevMessages, message]);
+            }
+          }
         } else if (data.type === 'chat.message') {
           // ignoring your own messages, receiving messages from websocket only from other users
-          if (!(userInfo && data.user_id === userInfo.userId)) {
+          if (!(userInfo && data.user_id === userInfo.current?.userId)) {
             const message: Message = {
               content: data.message,
               sentBy: data.nickname, 
@@ -82,7 +102,7 @@ function App() {
         ws.send(JSON.stringify({ message: inputMessage }));
         const message: Message = {
           content: inputMessage,
-          sentBy: userInfo?.nickname || 'UNKNOWN', // Use nickname or 'UNKNOWN' if not available
+          sentBy: userInfo.current?.nickname || 'UNKNOWN', // Use nickname or 'UNKNOWN' if not available
         };
         setMessages((prevMessages) => [...prevMessages, message]);
         setInputMessage('');
@@ -100,10 +120,10 @@ function App() {
 
   return (
     <div className="App">
-      {userInfo && (
+      {(userInfo && userInfo.current) &&  (
         <div>
-          <p>Your nickname: {userInfo.nickname}</p>
-          <p>Your user ID: {userInfo.userId}</p>
+          <p>Your nickname: {userInfo.current.nickname}</p>
+          <p>Your user ID: {userInfo.current.userId}</p>
         </div>
       )}
 
